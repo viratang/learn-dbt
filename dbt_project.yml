@@ -43,13 +43,13 @@ on-run-end:
 
 models:
   viratang_learn_dbt:
-      # Applies to all files under models/example/
-      example:
-          materialized: table
-          pre-hook: "insert into dbt.audit (model, state, time) values( '{{this.name}}', 'starting model deployment', current_timestamp)"
-          #We need to input spaces for below jinja statement
-          #post-hook: 'grant usage on schema {{target.this}} to role analyst'
-          #post-hook: 'grant select on {{this}} to role analyst'
+    # Applies to all files under models/example/
+    example:
+      materialized: table
+      pre-hook: "insert into dbt.audit (model, state, time) values( '{{this.name}}', 'starting model deployment', current_timestamp)"
+      #We need to input spaces for below jinja statement
+      #post-hook: 'grant usage on schema {{target.this}} to role analyst'
+      #post-hook: 'grant select on {{this}} to role analyst'
 
 # Need to add variables outside the model instead of inside the model section.
 vars:
