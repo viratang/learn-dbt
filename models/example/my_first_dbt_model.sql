@@ -8,16 +8,16 @@
 */
 
 
-{{ config(materialized='table', alias='first_model') }} --ephemeral means a temporary table is created but not stored in db.
+{{ config(materialized='table', alias='first_model', tags=["nightly","example"]) }} --ephemeral means a temporary table is created but not stored in db.
 
 
 with source_data as (
 
-    select 1 as id
+    select 1 as id, 'NJ' as state,'2020-02-02 00:02:00.000'::timestamp as updated_at
     union all
-    select null as id
+    select null as id, 'CT' as state,'2020-01-01 00:00:00.000'::timestamp as updated_at
     union all
-    select 3 as id
+    select 3 as id, 'VT' as state, '2020-01-01 00:00:00.000'::timestamp as updated_at
 
 )
 

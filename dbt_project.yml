@@ -24,6 +24,16 @@ clean-targets:         # directories to be removed by `dbt clean`
     - "target"
     - "dbt_modules"
 
+#below is pre hooks
+on-run-start:
+  - "create table if not exists audit (model text, state text, time timestamp_ltz)"
+
+# below is post hooks
+on-run-end:
+  - 'grant usage on schema analytics.dbt to role analyst'
+  - 'grant select on all tables in schema analytics.dbt to role analyst'
+  - 'grant select on all views in schema analytics.dbt to role analyst'
+
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
 
@@ -36,6 +46,10 @@ models:
       # Applies to all files under models/example/
       example:
           materialized: table
+          pre-hook: "insert into dbt.audit (model, state, time) values( '{{this.name}}', 'starting model deployment', current_timestamp)"
+          #We need to input spaces for below jinja statement
+          #post-hook: 'grant usage on schema {{target.this}} to role analyst'
+          #post-hook: 'grant select on {{this}} to role analyst'
 
 # Need to add variables outside the model instead of inside the model section.
 vars:
