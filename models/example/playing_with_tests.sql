@@ -1,2 +1,12 @@
-select *
-from"SNOWFLAKE_SAMPLE_DATA"."TPCH_SF1"."CUSTOMER"
+--Below is Commmon Table expression, try to make it as simple as possible
+with sample_customer as (
+    SELECT *
+    FROM {{ source( 'sample', 'customer')}}
+)
+
+--below is the actual SQL statement, you just read from the Common Table Expression from the top.
+select
+    c_custkey,
+    c_mktsegment,
+    {{rename_segments('c_mktsegment')}}  mkt_segment_adjusted
+from sample_customer
